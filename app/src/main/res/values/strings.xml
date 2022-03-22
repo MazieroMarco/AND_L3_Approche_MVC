@@ -1,3 +1,85 @@
 <resources>
+
     <string name="app_name">AND_L3</string>
+
+    <string name="main_base_title">Données de base</string>
+    <string name="main_base_name_title">Nom</string>
+    <string name="main_base_firstname_title">Prénom</string>
+    <string name="main_base_birthdate_title">Date de naissance</string>
+    <string name="main_base_birthdate_dialog_title">Sélectionnez votre date de naissance</string>
+    <string name="main_base_nationality_title">Nationalité</string>
+    <string name="main_base_occupation_title">Occupation</string>
+    <string name="main_base_occupation_student">Etudiant</string>
+    <string name="main_base_occupation_worker">Employé</string>
+
+    <string-array translatable="false" name="nationalities">
+        <item>@string/ch</item>
+        <item>@string/fr</item>
+        <item>@string/de</item>
+        <item>@string/it</item>
+    </string-array>
+
+    <string name="nationality_empty">Sélectionner</string>
+    <string name="ch">Suisse</string>
+    <string name="fr">Français</string>
+    <string name="de">Allemand</string>
+    <string name="it">Italien</string>
+    <!-- ... -->
+
+    <string name="main_specific_students_title">Données spécifiques (étudiants)</string>
+    <string name="main_specific_school_title">Ecole/Université</string>
+    <string name="main_specific_graduationyear_title">Année du diplôme</string>
+
+    <string name="main_specific_workers_title">Données spécifiques (employé)</string>
+    <string name="main_specific_compagny_title">Entreprise</string>
+    <string name="main_specific_sector_title">Secteur</string>
+    <string name="main_specific_experience_title">Expérience (années)</string>
+
+    <string name="sectors_empty">Sélectionner</string>
+    <string-array name="sectors">
+        <item>@string/agriculture</item>
+        <item>@string/art</item>
+        <item>@string/construction</item>
+        <item>@string/management</item>
+        <item>@string/law</item>
+        <item>@string/teaching</item>
+        <item>@string/tourism</item>
+        <item>@string/industrie</item>
+        <item>@string/ic</item>
+        <item>@string/humansciences</item>
+        <item>@string/health</item>
+        <item>@string/sciences</item>
+        <item>@string/social</item>
+        <item>@string/sport</item>
+        <item>@string/logistic</item>
+    </string-array>
+
+    <!-- src: https://kitpedagogique.onisep.fr/forum-orientation/Decouvrir-les-secteurs-professionnels -->
+    <string name="agriculture">Agriculture, Agroalimentaire, Environnement</string>
+    <string name="art">Arts, Culture</string>
+    <string name="construction">Bâtiment, Travaux publics</string>
+    <string name="management">Commerce, Gestion, Économie, Management</string>
+    <string name="law">Droit, Sciences politiques, Sécurité</string>
+    <string name="teaching">Enseignement, Formation</string>
+    <string name="tourism">Hôtellerie, Restauration, Tourisme</string>
+    <string name="industrie">Industrie</string>
+    <string name="ic">Information, communication</string>
+    <string name="humansciences">Lettres, Langues, Sciences humaines</string>
+    <string name="health">Santé</string>
+    <string name="sciences">Sciences</string>
+    <string name="social">Social</string>
+    <string name="sport">Sport, Animation</string>
+    <string name="logistic">Transports, Logistique</string>
+    <string name="other">Autre</string>
+
+    <string name="additional_title">Données complémentaires</string>
+    <string name="additional_email_title">Adresse e-mail</string>
+    <string name="additional_picture_title">Photo</string>
+    <string name="additional_picture_cntdesc">Photo portrait de l\'utilisateur, cliquez pour prendre un selfie</string>
+
+    <string name="additional_remarks_title">Commentaires</string>
+
+    <string name="btn_cancel">@android:string/cancel</string>
+    <string name="btn_ok">@android:string/ok</string>
+
 </resources>
