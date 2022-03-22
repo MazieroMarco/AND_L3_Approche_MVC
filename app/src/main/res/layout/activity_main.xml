@@ -7,12 +7,118 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/tMain_Base_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/main_base_title"
+        android:textAllCaps="true"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tMain_base_name_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/main_base_name_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tMain_Base_title"
+        app:layout_constraintEnd_toStartOf="@id/eMain_base_name"
+        app:layout_constraintBaseline_toBaselineOf="@id/eMain_base_name"/>
+
+    <TextView
+        android:id="@+id/tMain_base_firstname_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/main_base_firstname_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tMain_base_name_title"
+        app:layout_constraintEnd_toStartOf="@id/eMain_base_firstname"
+        app:layout_constraintBaseline_toBaselineOf="@id/eMain_base_firstname"/>
+
+    <TextView
+        android:id="@+id/tMain_base_birthdate_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/main_base_birthdate_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tMain_base_firstname_title"
+        app:layout_constraintEnd_toStartOf="@id/eMain_base_birthday"
+        app:layout_constraintBaseline_toBaselineOf="@id/eMain_base_birthday"/>
+
+    <TextView
+        android:id="@+id/tMain_base_nationality_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/main_base_nationality_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tMain_base_birthdate_title"
+        app:layout_constraintEnd_toStartOf="@id/sNationalities"
+        app:layout_constraintBaseline_toBaselineOf="@id/sNationalities"/>
+
+    <Spinner
+        android:id="@+id/sNationalities"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:entries="@array/nationalities"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eMain_base_birthday"
+        app:layout_constraintStart_toEndOf="@+id/tMain_base_nationality_title"/>
+
+    <TextView
+        android:id="@+id/tMain_base_occupation_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/main_base_birthdate_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tMain_base_nationality_title" />
+
+    <EditText
+        android:id="@+id/eMain_base_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/main_base_name_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tMain_Base_title"
+        app:layout_constraintStart_toEndOf="@id/tMain_base_name_title"
+        android:autofillHints=""
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/eMain_base_firstname"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/main_base_firstname_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/eMain_base_name"
+        app:layout_constraintStart_toEndOf="@id/tMain_base_firstname_title"
+        android:autofillHints=""
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/eMain_base_birthday"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/bMain_birthday"
+        app:layout_constraintTop_toBottomOf="@id/eMain_base_firstname"
+        app:layout_constraintStart_toEndOf="@id/tMain_base_birthdate_title"
+        android:autofillHints=""
+        android:inputType="none" />
+
+    <ImageButton
+        android:id="@+id/bMain_birthday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:src="@drawable/cake"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toEndOf="@id/eMain_base_birthday"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/eMain_base_firstname"
+        android:contentDescription="@string/main_base_birthdate_title" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/gMain_base"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
