@@ -10,7 +10,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true">
 
         <EditText
             android:id="@+id/eMain_base_name"
@@ -64,11 +65,13 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <RadioButton
+                android:id="@+id/rbStudent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/main_base_occupation_student" />
 
             <RadioButton
+                android:id="@+id/rbEmployee"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/main_base_occupation_worker" />
@@ -162,7 +165,7 @@
             android:id="@+id/groupMain_specific_students"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             app:constraint_referenced_ids="tMain_specific_students_title,tMain_specific_school_title,tMain_specific_graduationyear_title,eMain_specific_school_title,eMain_specific_graduationyear_title"/>
 
         <TextView
