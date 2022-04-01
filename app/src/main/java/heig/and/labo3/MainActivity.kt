@@ -3,16 +3,20 @@ package heig.and.labo3
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.InputType
 import android.view.View
-import android.widget.EditText
-import android.widget.RadioGroup
-import android.widget.Spinner
+import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.FileProvider.getUriForFile
+import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import heig.and.labo3.databinding.ActivityMainBinding
+import java.io.File
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,15 +29,18 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Builds the date picker
-        val datePickerBuilder = MaterialDatePicker.Builder.datePicker()
-        datePickerBuilder.setTitleText("Date")
-        datePicker = datePickerBuilder.build()
+        // Builds a new date picker
+        datePicker = buildDatePicker()
 
-        // Datepicker update listener
+        // Date picker update listener
         datePicker.addOnPositiveButtonClickListener {
             // Sets the selected date
             binding.eMainBaseBirthday.setText(Person.dateFormatter.format(it))
+        }
+
+        // Take picture callback
+        val takePicture = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+            binding.imageAdditionalPicture.setImageBitmap(bitmap)
         }
 
         // Listener on click on birthday button or input field
@@ -52,12 +59,17 @@ class MainActivity : AppCompatActivity() {
 
         // Opens photo mode on picture click
         binding.imageAdditionalPicture.setOnClickListener {
-            dispatchTakePictureIntent()
+            takePicture.launch(null)
         }
 
         // On submit click
         binding.bBtnOk.setOnClickListener {
-            validateFields()
+            // Validates the fields
+            val res = validateFields()
+
+            // Creates the person
+            val person = createNewPerson()
+            println(person.toString())
         }
 
         // On cancel click
@@ -66,7 +78,25 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Fills the fields
-        fillFileds()
+        fillFields()
+    }
+
+    private fun buildDatePicker() : MaterialDatePicker<Long> {
+        // Set up date constraints
+        val calendar = Calendar.getInstance()
+        val upTo = calendar.timeInMillis
+        calendar.set(1900, 1, 1)
+        val startFrom = calendar.timeInMillis
+        val constraints = CalendarConstraints.Builder()
+            .setStart(startFrom)
+            .setEnd(upTo)
+            .build()
+
+        // Builds the date picker
+        val datePickerBuilder = MaterialDatePicker.Builder.datePicker()
+        datePickerBuilder.setTitleText(getString(R.string.main_base_birthdate_title))
+        datePickerBuilder.setCalendarConstraints(constraints)
+        return datePickerBuilder.build()
     }
 
     private fun showDatePicker() {
@@ -76,7 +106,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showHideDetails(choiceId: Int) {
-        println("CHOICE : ".plus(choiceId))
         when(choiceId) {
             R.id.rbStudent -> {
                 binding.groupMainSpecificStudents.visibility = View.VISIBLE
@@ -93,16 +122,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun dispatchTakePictureIntent() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        try {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-        } catch (e: ActivityNotFoundException) {
-            // display error state to the user
-        }
-    }
-
-    private fun fillFileds() {
+    private fun fillFields() {
         // Name and Firstname
         binding.eMainBaseName.setText(CURRENT_PERSON.name)
         binding.eMainBaseFirstname.setText(CURRENT_PERSON.firstName)
@@ -162,34 +182,97 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun validateFields() {
+    private fun validateFields() : Boolean {
+        var result = true
+
         // Validate name and firstname
-        validateField(binding.eMainBaseName)
-        validateField(binding.eMainBaseFirstname)
+        result = result and validateField(binding.eMainBaseName)
+        result = result and validateField(binding.eMainBaseFirstname)
 
         // Birthdate
-        validateField(binding.eMainBaseBirthday)
+        result = result and validateField(binding.eMainBaseBirthday)
+
+        // Nationality
+        result = result and validateField(binding.sNationalities)
 
         // Details
         when(binding.rgOccupation.checkedRadioButtonId) {
             binding.rbStudent.id -> {
-                validateField(binding.eMainSpecificSchoolTitle)
-                validateField(binding.eMainSpecificGraduationyearTitle)
+                result = result and validateField(binding.eMainSpecificSchoolTitle)
+                result = result and validateField(binding.eMainSpecificGraduationyearTitle)
             }
             binding.rbEmployee.id -> {
-                validateField(binding.eMainSpecificCompagnyTitle)
-                validateField(binding.eMainSpecificExperienceTitle)
+                result = result and validateField(binding.eMainSpecificCompagnyTitle)
+                result = result and validateField(binding.eMainSpecificExperienceTitle)
+                result = result and validateField(binding.sSectors)
             }
         }
 
         // Email
-        validateField(binding.eAdditionalEmailTitle)
+        result = result.and(validateField(binding.eAdditionalEmailTitle))
+
+        return result
     }
 
-    private fun validateField(field: EditText) {
-        if (field.text.isEmpty()) {
-            field.error = getString(R.string.err_empty_field)
+    private fun validateField(field: View) : Boolean {
+        when(field) {
+            is EditText -> {
+                if (field.text.isEmpty()) {
+                    field.error = getString(R.string.err_empty_field)
+                    return false
+                }
+            }
+            is Spinner -> {
+                if (field.selectedItemPosition == 0) {
+                    val errorText = field.selectedView as TextView
+                    errorText.error = getString(R.string.err_empty_field)
+                    errorText.setTextColor(Color.RED)
+                    return false
+                }
+            }
         }
+        return true
+    }
+
+    private fun createNewPerson() : Person? {
+        // Gets the date picker date
+        val birthday = Calendar.getInstance()
+        val date = Person.dateFormatter.parse(binding.eMainBaseBirthday.text.toString())
+        birthday.time = date
+
+        var newPerson: Person? = null
+
+        when(binding.rgOccupation.checkedRadioButtonId) {
+            binding.rbStudent.id -> {
+                newPerson = Student(
+                    binding.eMainBaseName.text.toString(),
+                    binding.eMainBaseFirstname.text.toString(),
+                    birthday,
+                    binding.sNationalities.selectedItem.toString(),
+                    binding.eMainSpecificSchoolTitle.text.toString(),
+                    binding.eMainSpecificGraduationyearTitle.text.toString().toInt(),
+                    binding.eAdditionalEmailTitle.text.toString(),
+                    binding.tAdditionalRemarksContent.text.toString(),
+                    ""
+                )
+            }
+            binding.rbEmployee.id -> {
+                newPerson = Worker(
+                    binding.eMainBaseName.text.toString(),
+                    binding.eMainBaseFirstname.text.toString(),
+                    birthday,
+                    binding.sNationalities.selectedItem.toString(),
+                    binding.eMainSpecificCompagnyTitle.text.toString(),
+                    binding.sSectors.selectedItem.toString(),
+                    binding.eMainSpecificExperienceTitle.text.toString().toInt(),
+                    binding.eAdditionalEmailTitle.text.toString(),
+                    binding.tAdditionalRemarksContent.text.toString(),
+                    ""
+                )
+            }
+        }
+
+        return newPerson
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
