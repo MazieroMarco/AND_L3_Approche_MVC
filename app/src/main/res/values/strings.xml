@@ -82,4 +82,7 @@
     <string name="btn_cancel">@android:string/cancel</string>
     <string name="btn_ok">@android:string/ok</string>
 
+    <!-- Error texts -->
+    <string name="err_empty_field">Champ obligatoire</string>
+
 </resources>

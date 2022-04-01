@@ -9,6 +9,7 @@
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_constraint_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true">
@@ -40,7 +41,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:autofillHints=""
-            android:inputType="none"
+            android:focusable="false"
             app:layout_constraintEnd_toStartOf="@+id/bMain_birthday"
             app:layout_constraintStart_toEndOf="@id/barrierMain_Base"
             app:layout_constraintTop_toBottomOf="@id/eMain_base_firstname" />
@@ -165,7 +166,7 @@
             android:id="@+id/groupMain_specific_students"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
+            android:visibility="gone"
             app:constraint_referenced_ids="tMain_specific_students_title,tMain_specific_school_title,tMain_specific_graduationyear_title,eMain_specific_school_title,eMain_specific_graduationyear_title"/>
 
         <TextView
@@ -366,15 +367,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imageAdditional_picture"/>
 
-        <TextView
+        <EditText
             android:id="@+id/tAdditional_remarks_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:inputType="textMultiLine"
             app:layout_constraintTop_toBottomOf="@id/tAdditional_remarks_title"
             app:layout_constraintBottom_toTopOf="@id/bBtn_cancel"
             android:textColor="@color/black"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:autofillHints="" />
 
         <Button
             android:id="@+id/bBtn_cancel"
