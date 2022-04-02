@@ -9,8 +9,10 @@
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_constraint_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="true">
 
         <EditText
             android:id="@+id/eMain_base_name"
@@ -21,7 +23,8 @@
             android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/barrierMain_Base"
-            app:layout_constraintTop_toBottomOf="@id/tMain_Base_title" />
+            app:layout_constraintTop_toBottomOf="@id/tMain_Base_title"
+            android:nextFocusForward="@id/eMain_base_firstname"/>
 
         <EditText
             android:id="@+id/eMain_base_firstname"
@@ -32,17 +35,19 @@
             android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/barrierMain_Base"
-            app:layout_constraintTop_toBottomOf="@id/eMain_base_name" />
+            app:layout_constraintTop_toBottomOf="@id/eMain_base_name"
+            android:nextFocusForward="@id/eMain_base_birthday"/>
 
         <EditText
             android:id="@+id/eMain_base_birthday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:autofillHints=""
-            android:inputType="none"
+            android:focusable="false"
             app:layout_constraintEnd_toStartOf="@+id/bMain_birthday"
             app:layout_constraintStart_toEndOf="@id/barrierMain_Base"
-            app:layout_constraintTop_toBottomOf="@id/eMain_base_firstname" />
+            app:layout_constraintTop_toBottomOf="@id/eMain_base_firstname"
+            android:nextFocusForward="@id/sNationalities"/>
 
         <ImageButton
             android:id="@+id/bMain_birthday"
@@ -64,11 +69,13 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <RadioButton
+                android:id="@+id/rbStudent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/main_base_occupation_student" />
 
             <RadioButton
+                android:id="@+id/rbEmployee"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/main_base_occupation_worker" />
@@ -269,7 +276,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tMain_specific_compagny_title" />
 
-    <!--    TODO add spinner default text   -->
         <Spinner
             android:id="@+id/sSectors"
             android:layout_width="0dp"
@@ -337,7 +343,8 @@
             android:inputType="textEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/barrierMain_Base"
-            app:layout_constraintTop_toBottomOf="@id/tAdditional_title" />
+            app:layout_constraintTop_toBottomOf="@id/tAdditional_title"
+            android:nextFocusForward="@id/tAdditional_remarks_content"/>
 
         <TextView
             android:id="@+id/tAdditional_picture_title"
@@ -363,15 +370,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imageAdditional_picture"/>
 
-        <TextView
+        <EditText
             android:id="@+id/tAdditional_remarks_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:inputType="textMultiLine|textAutoComplete|textAutoCorrect"
             app:layout_constraintTop_toBottomOf="@id/tAdditional_remarks_title"
             app:layout_constraintBottom_toTopOf="@id/bBtn_cancel"
             android:textColor="@color/black"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:autofillHints="" />
 
         <Button
             android:id="@+id/bBtn_cancel"

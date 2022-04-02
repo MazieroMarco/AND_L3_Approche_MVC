@@ -1,6 +1,6 @@
 <resources>
 
-    <string name="app_name">AND_L3</string>
+    <string name="app_name">Labo3</string>
 
     <string name="main_base_title">Données de base</string>
     <string name="main_base_name_title">Nom</string>
@@ -13,6 +13,7 @@
     <string name="main_base_occupation_worker">Employé</string>
 
     <string-array translatable="false" name="nationalities">
+        <item>@string/nationality_empty</item>
         <item>@string/ch</item>
         <item>@string/fr</item>
         <item>@string/de</item>
@@ -37,6 +38,7 @@
 
     <string name="sectors_empty">Sélectionner</string>
     <string-array name="sectors">
+        <item>@string/sectors_empty</item>
         <item>@string/agriculture</item>
         <item>@string/art</item>
         <item>@string/construction</item>
@@ -81,5 +83,12 @@
 
     <string name="btn_cancel">@android:string/cancel</string>
     <string name="btn_ok">@android:string/ok</string>
+
+    <!-- Error texts -->
+    <string name="err_empty_field">Champ obligatoire</string>
+    <string name="err_invalid_email">Email invalide</string>
+
+    <!-- Success text -->
+    <string name="success_person_creation">Nouvelle personne créée</string>
 
 </resources>
