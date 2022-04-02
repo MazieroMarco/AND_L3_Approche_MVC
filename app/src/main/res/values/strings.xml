@@ -88,4 +88,7 @@
     <string name="err_empty_field">Champ obligatoire</string>
     <string name="err_invalid_email">Email invalide</string>
 
+    <!-- Success text -->
+    <string name="success_person_creation">Nouvelle personne créee</string>
+
 </resources>

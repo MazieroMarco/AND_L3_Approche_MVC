@@ -1,28 +1,28 @@
 package heig.and.labo3
 
-import android.content.ActivityNotFoundException
-import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.View
 import android.widget.*
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.result.contract.ActivityResultContracts.TakePicture
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.FileProvider.getUriForFile
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import heig.and.labo3.databinding.ActivityMainBinding
-import java.io.File
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
-
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var datePicker: MaterialDatePicker<Long>
+
+    private var userPictureUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +38,16 @@ class MainActivity : AppCompatActivity() {
             binding.eMainBaseBirthday.setText(Person.dateFormatter.format(it))
         }
 
-        // Take picture callback
-        val takePicture = registerForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
-            binding.imageAdditionalPicture.setImageBitmap(bitmap)
+        // Picture activity callback
+        val takePicture = registerForActivityResult(TakePicture()) { imgSaved ->
+            if (imgSaved) {
+                GlobalScope.launch {
+                    val correctedPic = ProfilePictureManager.correctRotation(contentResolver, userPictureUri!!)
+                    withContext(Dispatchers.Main) {
+                        binding.imageAdditionalPicture.setImageBitmap(correctedPic)
+                    }
+                }
+            }
         }
 
         // Listener on click on birthday button or input field
@@ -59,17 +66,25 @@ class MainActivity : AppCompatActivity() {
 
         // Opens photo mode on picture click
         binding.imageAdditionalPicture.setOnClickListener {
-            takePicture.launch(null)
+            userPictureUri = ProfilePictureManager.createPicUri(this, cacheDir)
+            takePicture.launch(userPictureUri)
         }
 
         // On submit click
         binding.bBtnOk.setOnClickListener {
             // Validates the fields
-            val res = validateFields()
+            if(validateFields()) {
+                // Fields are valid, creates the person
+                val person = createNewPerson()
+                println(person.toString())
 
-            // Creates the person
-            val person = createNewPerson()
-            println(person.toString())
+                // Displays alert dialog
+                val builder: AlertDialog.Builder = AlertDialog.Builder(this@MainActivity)
+                builder.setTitle(getString(R.string.success_person_creation))
+                builder.setMessage(person.toString())
+                builder.setPositiveButton("Ok", null)
+                builder.show()
+            }
         }
 
         // On cancel click
@@ -178,6 +193,12 @@ class MainActivity : AppCompatActivity() {
                 is RadioGroup -> {
                     view.clearCheck()
                 }
+                is ImageView -> {
+                    // Resets user picture
+                    if (view.id == binding.imageAdditionalPicture.id) {
+                        view.setImageResource(R.drawable.placeholder_selfie)
+                    }
+                }
             }
         }
     }
@@ -220,6 +241,8 @@ class MainActivity : AppCompatActivity() {
                 if (field.text.isEmpty()) {
                     field.error = getString(R.string.err_empty_field)
                     return false
+                } else {
+                    field.error = null
                 }
             }
             is Spinner -> {
@@ -253,7 +276,7 @@ class MainActivity : AppCompatActivity() {
                     binding.eMainSpecificGraduationyearTitle.text.toString().toInt(),
                     binding.eAdditionalEmailTitle.text.toString(),
                     binding.tAdditionalRemarksContent.text.toString(),
-                    ""
+                    userPictureUri?.path
                 )
             }
             binding.rbEmployee.id -> {
@@ -267,20 +290,12 @@ class MainActivity : AppCompatActivity() {
                     binding.eMainSpecificExperienceTitle.text.toString().toInt(),
                     binding.eAdditionalEmailTitle.text.toString(),
                     binding.tAdditionalRemarksContent.text.toString(),
-                    ""
+                    userPictureUri?.path
                 )
             }
         }
 
         return newPerson
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            val imageBitmap = data!!.extras!!.get("data") as Bitmap
-            binding.imageAdditionalPicture.setImageBitmap(imageBitmap)
-        }
     }
 
     companion object {

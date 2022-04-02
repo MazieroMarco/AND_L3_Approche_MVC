@@ -273,7 +273,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tMain_specific_compagny_title" />
 
-    <!--    TODO add spinner default text   -->
         <Spinner
             android:id="@+id/sSectors"
             android:layout_width="0dp"
