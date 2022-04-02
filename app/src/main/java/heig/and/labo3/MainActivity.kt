@@ -17,6 +17,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 
+/**
+ * Authors : Zwick Gaétan, Maziero Marco
+ * Date : 02.04.2022
+ */
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -24,6 +28,9 @@ class MainActivity : AppCompatActivity() {
 
     private var userPictureUri: Uri? = null
 
+    /**
+     * Defines the date picker, bindings and adds the event listeners
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -96,6 +103,9 @@ class MainActivity : AppCompatActivity() {
         fillFields()
     }
 
+    /**
+     * Builds the custom date picker
+     */
     private fun buildDatePicker() : MaterialDatePicker<Long> {
         // Set up date constraints
         val calendar = Calendar.getInstance()
@@ -114,12 +124,18 @@ class MainActivity : AppCompatActivity() {
         return datePickerBuilder.build()
     }
 
+    /**
+     * Displays the created date picker
+     */
     private fun showDatePicker() {
         if (!datePicker.isVisible) {
             datePicker.show(supportFragmentManager, "MATERIAL_DATE_PICKER");
         }
     }
 
+    /**
+     * Hides and shows the correct specific section (student / worker)
+     */
     private fun showHideDetails(choiceId: Int) {
         when(choiceId) {
             R.id.rbStudent -> {
@@ -137,6 +153,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Fills all the fields with the selected person instance
+     */
     private fun fillFields() {
         // Name and Firstname
         binding.eMainBaseName.setText(CURRENT_PERSON.name)
@@ -180,6 +199,9 @@ class MainActivity : AppCompatActivity() {
         binding.tAdditionalRemarksContent.setText(CURRENT_PERSON.remark)
     }
 
+    /**
+     * Clears all fields
+     */
     private fun clearFields() {
         val count: Int = binding.mainConstraintLayout.childCount
         for (i in 0 until count) {
@@ -203,6 +225,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Validates the fields before creating a new person
+     */
     private fun validateFields() : Boolean {
         var result = true
 
@@ -235,6 +260,9 @@ class MainActivity : AppCompatActivity() {
         return result
     }
 
+    /**
+     * Validates one given field
+     */
     private fun validateField(field: View) : Boolean {
         when(field) {
             is EditText -> {
@@ -257,6 +285,9 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    /**
+     * Creates a new person with the fields values
+     */
     private fun createNewPerson() : Person? {
         // Gets the date picker date
         val birthday = Calendar.getInstance()
@@ -300,6 +331,6 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val REQUEST_IMAGE_CAPTURE = 1
-        val CURRENT_PERSON = Person.exampleStudent as Person
+        val CURRENT_PERSON = Person.exampleWorker as Person
     }
 }

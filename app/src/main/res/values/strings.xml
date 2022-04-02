@@ -89,6 +89,6 @@
     <string name="err_invalid_email">Email invalide</string>
 
     <!-- Success text -->
-    <string name="success_person_creation">Nouvelle personne créee</string>
+    <string name="success_person_creation">Nouvelle personne créée</string>
 
 </resources>
