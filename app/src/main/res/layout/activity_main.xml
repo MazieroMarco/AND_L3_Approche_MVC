@@ -23,7 +23,8 @@
             android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/barrierMain_Base"
-            app:layout_constraintTop_toBottomOf="@id/tMain_Base_title" />
+            app:layout_constraintTop_toBottomOf="@id/tMain_Base_title"
+            android:nextFocusForward="@id/eMain_base_firstname"/>
 
         <EditText
             android:id="@+id/eMain_base_firstname"
@@ -34,7 +35,8 @@
             android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/barrierMain_Base"
-            app:layout_constraintTop_toBottomOf="@id/eMain_base_name" />
+            app:layout_constraintTop_toBottomOf="@id/eMain_base_name"
+            android:nextFocusForward="@id/eMain_base_birthday"/>
 
         <EditText
             android:id="@+id/eMain_base_birthday"
@@ -44,7 +46,8 @@
             android:focusable="false"
             app:layout_constraintEnd_toStartOf="@+id/bMain_birthday"
             app:layout_constraintStart_toEndOf="@id/barrierMain_Base"
-            app:layout_constraintTop_toBottomOf="@id/eMain_base_firstname" />
+            app:layout_constraintTop_toBottomOf="@id/eMain_base_firstname"
+            android:nextFocusForward="@id/sNationalities"/>
 
         <ImageButton
             android:id="@+id/bMain_birthday"
@@ -340,7 +343,8 @@
             android:inputType="textEmailAddress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/barrierMain_Base"
-            app:layout_constraintTop_toBottomOf="@id/tAdditional_title" />
+            app:layout_constraintTop_toBottomOf="@id/tAdditional_title"
+            android:nextFocusForward="@id/tAdditional_remarks_content"/>
 
         <TextView
             android:id="@+id/tAdditional_picture_title"

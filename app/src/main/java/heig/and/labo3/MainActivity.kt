@@ -1,6 +1,7 @@
 package heig.and.labo3
 
 import android.graphics.Color
+import android.hardware.camera2.CameraManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -100,7 +101,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Fills the fields
-        fillFields()
+        if (CURRENT_PERSON != null) {
+            fillFields()
+        }
     }
 
     /**
@@ -158,7 +161,7 @@ class MainActivity : AppCompatActivity() {
      */
     private fun fillFields() {
         // Name and Firstname
-        binding.eMainBaseName.setText(CURRENT_PERSON.name)
+        binding.eMainBaseName.setText(CURRENT_PERSON!!.name)
         binding.eMainBaseFirstname.setText(CURRENT_PERSON.firstName)
 
         // Birth date
@@ -331,6 +334,6 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val REQUEST_IMAGE_CAPTURE = 1
-        val CURRENT_PERSON = Person.exampleWorker as Person
+        val CURRENT_PERSON: Person? = Person.exampleStudent
     }
 }
