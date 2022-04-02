@@ -1,7 +1,6 @@
 package heig.and.labo3
 
 import android.graphics.Color
-import android.hardware.camera2.CameraManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -19,7 +18,7 @@ import kotlinx.coroutines.withContext
 import java.util.*
 
 /**
- * Authors : Zwick Gaétan, Maziero Marco
+ * Authors : Zwick Gaétan, Maziero Marco, Lamrani Soulaymane
  * Date : 02.04.2022
  */
 class MainActivity : AppCompatActivity() {
